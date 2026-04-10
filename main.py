@@ -7,8 +7,8 @@ import os
 import csv
 
 from src.scrape import get_recipe_urls
-from src.transform import extract_titles, build_data_structures
-from src.load import save_to_csv
+from src.transform import extract_titles, extract_raw_titles, build_data_structures
+from src.load import save_to_csv, save_raw_titles_to_csv
 
 def main():
     # Get recipe URLs
@@ -23,6 +23,10 @@ def main():
     titles = extract_titles(recipe_urls)
     print(f"Extracted {len(titles)} recipe titles.")
 
+    raw_titles = extract_raw_titles(recipe_urls)
+    print(f"Extracted {len(raw_titles)} raw recipe titles.")
+
+
     # Create structured data
     dicts, db_rows = build_data_structures(titles)
 
@@ -34,6 +38,10 @@ def main():
     output_path = os.path.join("data", "processed", "recipes.csv")
     save_to_csv(dicts, output_path)
     print(f"Saved data to {output_path}")
+    
+    output_path = os.path.join("data", "raw", "recipes.csv")
+    save_raw_titles_to_csv(raw_titles, output_path)
+    print(f"Saved raw data to {output_path}")
 
 
 if __name__ == "__main__":

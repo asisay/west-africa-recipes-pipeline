@@ -17,13 +17,22 @@ def extract_titles(recipe_urls):
 
     return titles
 
+def extract_raw_titles(recipe_urls):
+    titles = []
+
+    for recipe in recipe_urls:
+        title = recipe.rstrip("/").split("/")[-1].replace("-", " ") # .rstrip("/") removes trailing slash
+        titles.append(title)
+
+    return titles
+
 def build_data_structures(titles):
     dictionary_format = []
     database_format = []
 
     for title in titles:
-        dictionary_format.append({"title": title})
-        database_format.append((title,))
+        dictionary_format.append({"title": title, "title_length": len(title)})
+        database_format.append((title, len(title),))
 
     return dictionary_format, database_format
 
